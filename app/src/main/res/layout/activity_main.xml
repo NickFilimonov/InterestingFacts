@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/editTextFact"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/fact_hint"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/editTextSource"
+        app:layout_constraintStart_toStartOf="@+id/editTextFact"
+        app:layout_constraintTop_toBottomOf="@id/editTextFact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/sourse_hint"
+        android:maxLines="1"/>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/editTextFact"
+        app:layout_constraintTop_toBottomOf="@id/editTextSource"
+        android:text="@string/save"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/editTextFact"
+        app:layout_constraintTop_toBottomOf="@id/saveButton"
+        tools:listitem="@layout/fact_item"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
