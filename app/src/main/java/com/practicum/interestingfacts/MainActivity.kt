@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 
 const val FACTS_PREFERENCES = "facts_preferences"
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var saveButton: Button
     private lateinit var editFact: EditText
     private lateinit var editSourse: EditText
+    private lateinit var recyclerView: RecyclerView
     private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +50,17 @@ class MainActivity : AppCompatActivity() {
         saveButton = findViewById(R.id.saveButton)
         editFact = findViewById(R.id.editTextFact)
         editSourse = findViewById(R.id.editTextSource)
+        recyclerView = findViewById(R.id.rvFacts)
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val sharedPreferences = getSharedPreferences(FACTS_PREFERENCES, MODE_PRIVATE)
+
+        val facts = sharedPreferences.getString(FACTS_LIST_KEY, null) // считывание массива из Shared Preference (если хранилище пустое, ставим null)
+        if (facts != null) {
+            adapter.facts.addAll(createFactsListFromJson(facts)) //дессиарилизованные заметки передаются в адаптер
+        }
 
         listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == NEW_FACT_KEY) {
@@ -69,10 +81,7 @@ class MainActivity : AppCompatActivity() {
                 .apply()
         }
 
-//        val facts = sharedPreference.getString(FACTS_LIST_KEY, null) // считывание массива из Shared Preference (если хранилище пустое, ставим null)
-//        if (facts != null) {
-//            adapter.facts = createFactsListFromJson(facts) //дессиарилизованные заметки передаются в адаптер
-//        }
+
 //
 //        saveButton.setOnClickListener {
 //            val fact = Fact(editFact.text.toString(), editSourse.text.toString())
@@ -92,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences(FACTS_PREFERENCES, MODE_PRIVATE)
         sharedPreferences.edit()
-            .putString(FACTS_LIST_KEY, createJsonFromFactsList(adapter.facts)) // отдает данные adapter, а createJsonFromFactsList() их серриализует
+            .putString(FACTS_LIST_KEY, createJsonFromFactsList(adapter.facts.toTypedArray())) // отдает данные adapter, а createJsonFromFactsList() их серриализует
             .apply()
     }
 }

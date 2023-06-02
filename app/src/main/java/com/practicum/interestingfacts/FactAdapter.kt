@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class FactAdapter() : RecyclerView.Adapter<FactViewHolder> (){
 
-    lateinit var facts: Array<Fact>
+    var facts = ArrayList<Fact>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FactViewHolder = FactViewHolder(parent)
 
